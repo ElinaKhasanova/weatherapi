@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.0"
+    defaultConfig {
+        applicationId "com.example.xenya.openweather"
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+detekt {
+    version = "1.0.0-RC12"
+    input = files("${project.rootDir}/app/src/main/java")
+    config = files("${project.rootDir}/codequality/detekt/detekt-config.yml")
+    filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+    reports {
+        xml {
+            enabled = true
+            destination = file("app/build/reports/detekt.xml")
+        }
+        html {
+            enabled = true
+            destination = file("app/build/reports/detekt.html")
+        }
+    }
+}
+
+dependencies {
+    def room_version = "2.1.0-alpha03"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'tech.schoolhelper:moxy-x-androidx:1.5.7'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation "io.reactivex.rxjava2:rxjava:2.2.5"
+    implementation 'io.reactivex.rxjava2:rxkotlin:2.3.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
+    implementation 'org.mockito:mockito-core:1.10.19'
+    implementation'androidx.test:core:1.0.0'
+
+    kapt "androidx.room:room-compiler:$room_version"
+    kapt 'tech.schoolhelper:moxy-x-compiler:1.5.7'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+    testImplementation 'org.mockito:mockito-inline:2.7.22'
+    testImplementation "org.powermock:powermock-api-mockito2:2.0.0"
+    testImplementation "org.powermock:powermock-module-junit4:2.0.0"
+    testImplementation "org.powermock:powermock-module-junit4-rule:2.0.0"
+    testImplementation "org.powermock:powermock-classloading-xstream:2.0.0"
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
+}
